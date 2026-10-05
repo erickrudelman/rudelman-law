@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel Admin | Rudelman Law</title>
+  <link rel="icon" type="image/png" href="../img/logo-dark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Fahkwang:wght@400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="login-view" hidden>
+  <form class="login-card" id="login-form">
+    <img src="../img/logo-light.png" alt="Rudelman Law" width="110">
+    <h1>Panel de administración</h1>
+    <label>Contraseña
+      <input type="password" name="password" autocomplete="current-password" required autofocus>
+    </label>
+    <button class="btn btn-gold" type="submit">Entrar</button>
+    <p class="msg" id="login-msg" role="alert"></p>
+  </form>
+</section>
+
+<!-- APP -->
+<div class="app" id="app-view" hidden>
+  <header class="topbar">
+    <a href="../" class="brand" target="_blank" rel="noopener"><img src="../img/logo-light.png" alt="Rudelman Law" width="54"></a>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="messages" aria-selected="true">Mensajes <span class="badge" id="unread-badge" hidden></span></button>
+      <button role="tab" data-tab="team" aria-selected="false">Equipo</button>
+    </nav>
+    <button class="btn-link" id="logout">Salir</button>
+  </header>
+
+  <main class="content">
+    <div class="notice" id="email-notice" hidden></div>
+
+    <!-- MESSAGES -->
+    <section id="tab-messages" class="tab">
+      <div class="tab-head">
+        <h2>Mensajes de clientes</h2>
+        <div class="filters">
+          <button class="chip" data-filter="all" aria-pressed="true">Todos</button>
+          <button class="chip" data-filter="unread" aria-pressed="false">No leídos</button>
+        </div>
+      </div>
+      <div id="messages-list" class="messages"></div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="tab-team" class="tab" hidden>
+      <div class="tab-head">
+        <h2>Miembros del equipo</h2>
+        <button class="btn btn-gold" id="add-member">+ Agregar miembro</button>
+      </div>
+      <p class="hint">Los cambios se publican en el sitio de inmediato. Ordene con el número de "Orden" (menor aparece primero). Desmarque "Visible" para ocultar a alguien sin borrarlo.</p>
+      <div id="team-list" class="team-table"></div>
+    </section>
+  </main>
+</div>
+
+<!-- MEMBER DIALOG -->
+<dialog id="member-dialog">
+  <form id="member-form" method="dialog" enctype="multipart/form-data">
+    <h3 id="member-dialog-title">Nuevo miembro</h3>
+    <div class="photo-edit">
+      <div class="photo-preview" id="photo-preview"></div>
+      <div>
+        <label class="btn btn-outline">Subir foto<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden></label>
+        <button type="button" class="btn-link danger" id="remove-photo" hidden>Quitar foto</button>
+        <p class="hint small">JPG, PNG o WebP, máx. 5 MB. Ideal: vertical, fondo neutro.</p>
+      </div>
+    </div>
+    <label>Nombre completo *<input name="name" required maxlength="120"></label>
+    <div class="row">
+      <label>Cargo (inglés) *<input name="role_en" required maxlength="120" list="roles-en" placeholder="Attorney"></label>
+      <label>Cargo (español)<input name="role_es" maxlength="120" list="roles-es" placeholder="Abogado(a)"></label>
+    </div>
+    <div class="row">
+      <label>Email<input name="email" type="email" maxlength="200"></label>
+      <label>Teléfono<input name="phone" maxlength="40"></label>
+    </div>
+    <label>Biografía corta (inglés)<textarea name="bio_en" rows="3" maxlength="2000"></textarea></label>
+    <label>Biografía corta (español)<textarea name="bio_es" rows="3" maxlength="2000"></textarea></label>
+    <div class="row">
+      <label>Orden<input name="sort_order" type="number" step="1"></label>
+      <label class="check"><input type="checkbox" name="active" checked> Visible en el sitio</label>
+    </div>
+    <p class="msg" id="member-msg" role="alert"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" id="cancel-member">Cancelar</button>
+      <button type="submit" class="btn btn-gold">Guardar</button>
+    </div>
+  </form>
+</dialog>
+
+<datalist id="roles-en">
+  <option value="Attorney and Public Notary"><option value="Attorney"><option value="Paralegal"><option value="Accountant"><option value="Receptionist">
+</datalist>
+<datalist id="roles-es">
+  <option value="Abogado(a) y Notario(a) Público(a)"><option value="Abogado(a)"><option value="Asistente Legal"><option value="Contador(a)"><option value="Recepcionista">
+</datalist>
+
+<script src="admin.js"></script>
+</body>
+</html>
