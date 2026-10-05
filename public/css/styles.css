@@ -234,18 +234,55 @@ p { margin: 0 0 1em; }
 .practice-grid a:hover h3 { color: var(--gold-warm); }
 
 /* ---------- Coverage ---------- */
-.coverage { background: var(--cream-2); }
-.coverage-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 7vw, 100px); align-items: start; }
+.coverage { background: var(--cream-2); position: relative; overflow: hidden; }
+.coverage-grid {
+  position: relative; z-index: 1; display: grid;
+  grid-template-columns: 4fr 7fr; grid-template-rows: auto 1fr;
+  grid-template-areas: "text map" "places map";
+  column-gap: clamp(32px, 5vw, 72px); row-gap: 2rem;
+}
+.coverage-text { grid-area: text; align-self: end; }
+.cr-map { grid-area: map; }
+.places { grid-area: places; align-self: start; }
 .coverage-grid p { color: var(--muted); }
-.places { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.places { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .places li {
-  font-size: .9rem; padding: 8px 16px;
+  font-size: .82rem; padding: 6px 13px; cursor: default;
   border: 1px solid rgba(23,36,87,.18); border-radius: 999px;
   color: var(--navy); background: rgba(255,255,255,.5);
-  transition: background .3s, color .3s;
+  transition: background .3s, color .3s, border-color .3s;
 }
-.places li:hover { background: var(--navy); color: #fff; }
+.places li:hover, .places li.active { background: #33402a; border-color: #33402a; color: var(--cream); }
 .places li.hl { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+/* Illustrated map — the sea is transparent so it sits directly on the section */
+.cr-map { margin: 0 -2vw 0 0; position: relative; }
+.cr-map svg { display: block; width: 100%; height: auto; overflow: visible; }
+.cr-map .smoke { animation: smoke 5s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+@keyframes smoke { 0%, 100% { opacity: .75; transform: translateY(0); } 50% { opacity: .35; transform: translateY(-4px); } }
+.cr-map .map-sea { font: italic 400 30px var(--serif); fill: var(--navy); opacity: .42; letter-spacing: .08em; }
+.cr-map .map-country { font: 400 15px var(--display); fill: var(--navy); opacity: .35; letter-spacing: .5em; }
+.cr-map .compass-n { font: 500 15px var(--serif); fill: var(--navy); }
+.pin { cursor: pointer; outline: none; }
+.pin-dot { fill: #c9a878; stroke: var(--cream); stroke-width: 2; transition: transform .35s var(--ease), fill .35s; transform-box: fill-box; transform-origin: center; }
+.pin-pulse { fill: none; stroke: var(--gold-warm); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.capital .pin-pulse { animation: pulse 2.6s var(--ease) infinite; }
+@keyframes pulse { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(3.2); } }
+.pin-label {
+  font: 500 18px var(--sans); fill: var(--cream); letter-spacing: .02em;
+  paint-order: stroke; stroke: #2f3b26; stroke-width: 5px; stroke-linejoin: round;
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+.pin.labeled .pin-label { opacity: .95; }
+.capital .pin-label { font: 500 26px var(--serif); }
+.pin:hover .pin-dot, .pin:focus-visible .pin-dot, .pin.active .pin-dot { transform: scale(1.6); fill: var(--gold-warm); }
+.pin:hover .pin-label, .pin:focus-visible .pin-label, .pin.active .pin-label { opacity: 1; }
+.pin.active .pin-pulse { animation: pulse 1.4s var(--ease) infinite; }
+
+/* Palm fronds bleeding off the section edges */
+.leaves { position: absolute; pointer-events: none; z-index: 0; width: clamp(220px, 30vw, 440px); height: auto; }
+.leaves-tl { top: -40px; left: -60px; opacity: .55; }
+.leaves-br { bottom: -50px; right: -40px; transform: rotate(180deg); opacity: .9; z-index: 2; width: clamp(200px, 24vw, 360px); }
 
 /* ---------- Team ---------- */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 28px; }
@@ -369,6 +406,14 @@ p { margin: 0 0 1em; }
   .stat-num { font-size: 2.4rem; }
 
   .about-grid, .coverage-grid, .contact-grid, .service-cards { grid-template-columns: 1fr; }
+  .coverage-grid { grid-template-areas: "text" "map" "places"; grid-template-rows: auto; }
+  .cr-map { margin: 0 -8px; }
+  .pin.labeled:not(.capital) .pin-label { opacity: 0; }
+  .pin-label { font-size: 34px; stroke-width: 7px; }
+  .capital .pin-label { font-size: 40px; }
+  .pin.active .pin-label { opacity: 1 !important; }
+  .leaves-tl { width: 190px; opacity: .35; }
+  .leaves-br { width: 170px; bottom: -30px; }
   .about-mark { aspect-ratio: 16 / 10; }
   .about-mark img { width: 30%; }
   .service-card { padding: 36px 26px 30px; }

@@ -52,6 +52,7 @@
       'practice.cta': 'Contact Us',
       'coverage.eyebrow': 'Where we work',
       'coverage.title': 'From San José to every coast.',
+      'map.pacific': 'Pacific Ocean', 'map.caribbean': 'Caribbean Sea',
       'coverage.text': 'We provide extensive legal and business advisory services across Costa Rica, covering areas from San José to the Pacific and Caribbean coasts, and other locations.',
       'team.eyebrow': 'Our Team', 'team.title': 'Our Team Members', 'team.empty': 'Team information coming soon.',
       'contact.eyebrow': 'Get in touch with us now', 'contact.title': 'Contact Us',
@@ -96,6 +97,7 @@
       'practice.cta': 'Contáctenos',
       'coverage.eyebrow': 'Dónde trabajamos',
       'coverage.title': 'De San José a todas las costas.',
+      'map.pacific': 'Océano Pacífico', 'map.caribbean': 'Mar Caribe',
       'coverage.text': 'Brindamos amplios servicios de asesoría legal y empresarial en todo Costa Rica, desde San José hasta las costas del Pacífico y el Caribe, y otras localidades.',
       'team.eyebrow': 'Nuestro Equipo', 'team.title': 'Miembros del Equipo', 'team.empty': 'Información del equipo próximamente.',
       'contact.eyebrow': 'Contáctenos ahora', 'contact.title': 'Contáctenos',
@@ -162,9 +164,39 @@
   PLACES.forEach((p, i) => {
     const li = document.createElement('li');
     li.textContent = p;
+    li.dataset.place = p;
     if (i === 0) li.className = 'hl';
     places.appendChild(li);
   });
+
+  // ---------- Illustrated map: chips and pins highlight each other ----------
+  const mapBox = document.getElementById('cr-map');
+  fetch('img/cr-map.svg')
+    .then((r) => (r.ok ? r.text() : Promise.reject(r)))
+    .then((svg) => {
+      mapBox.innerHTML = svg;
+      applyLang();
+      const highlight = (name, on) => {
+        mapBox.querySelectorAll(`.pin[data-place="${CSS.escape(name)}"]`).forEach((p) => p.classList.toggle('active', on));
+        places.querySelectorAll(`[data-place="${CSS.escape(name)}"]`).forEach((c) => c.classList.toggle('active', on));
+      };
+      const bind = (root, selector) => {
+        root.addEventListener('mouseover', (e) => { const el = e.target.closest(selector); if (el) highlight(el.dataset.place, true); });
+        root.addEventListener('mouseout', (e) => { const el = e.target.closest(selector); if (el) highlight(el.dataset.place, false); });
+        root.addEventListener('focusin', (e) => { const el = e.target.closest(selector); if (el) highlight(el.dataset.place, true); });
+        root.addEventListener('focusout', (e) => { const el = e.target.closest(selector); if (el) highlight(el.dataset.place, false); });
+      };
+      bind(places, '[data-place]');
+      bind(mapBox, '.pin');
+      // Touch: tapping a chip shows its pin for a moment
+      places.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-place]');
+        if (!el) return;
+        highlight(el.dataset.place, true);
+        setTimeout(() => highlight(el.dataset.place, false), 1800);
+      });
+    })
+    .catch(() => mapBox.remove());
 
   // ---------- Team ----------
   const initials = (name) => name.replace(/[^\p{L}\s]/gu, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
