@@ -9,3 +9,4 @@ public/team.json
 .vercel
 .env*
 credenciales-admin.txt
+.cache/

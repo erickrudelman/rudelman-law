@@ -69,31 +69,64 @@ const inCR = (p) => inside(p, cr);
 // ---------- Places ----------
 // [lat, lon, label?, label anchor/offset]
 const PLACES = {
-  'San José':      [9.933, -84.083, true, 'end', -14, -10],
-  'Tamarindo':     [10.299, -85.837, true, 'end', -12, 4],
-  'Nosara':        [9.979, -85.653, true, 'end', -12, 4],
-  'Flamingo':      [10.433, -85.785],
-  'Marbella':      [10.056, -85.71],
-  'Papagayo':      [10.63, -85.68, true, 'end', -12, 4],
-  'Las Catalinas': [10.478, -85.792],
-  'Islita':        [9.857, -85.405],
-  'Manzanillo':    [9.69, -85.2],
-  'Playa Hermosa': [10.567, -85.675],
-  'Santa Teresa':  [9.643, -85.168, true, 'end', -12, 10],
-  'Malpaís':       [9.607, -85.142],
-  'Cabuya':        [9.596, -85.093],
-  'Montezuma':     [9.655, -85.069, true, 'start', 10, 16],
-  'Cóbano':        [9.683, -85.11],
-  'Tambor':        [9.716, -85.016],
-  'Puntarenas':    [9.976, -84.838, true, 'start', 10, 4],
-  'Quepos':        [9.43, -84.162, true, 'end', -12, 4],
-  'Dominical':     [9.253, -83.861],
-  'Uvita':         [9.16, -83.745, true, 'end', -12, 6],
-  'Ojochal':       [9.077, -83.665],
-  'Pavones':       [8.392, -83.14, true, 'end', -12, 4],
-  'Monteverde':    [10.301, -84.825, true, 'end', -12, -4],
-  'Arenal':        [10.463, -84.703, true, 'start', 12, 18],
-  'Puerto Viejo':  [9.656, -82.755, true, 'end', -12, 16],
+  // Central Valley & provincial capitals
+  'San José':       [9.933, -84.083, true, 'end', -14, -10],
+  'Alajuela':       [10.016, -84.214],
+  'Heredia':        [9.998, -84.117],
+  'Cartago':        [9.864, -83.919],
+  'Turrialba':      [9.906, -83.683],
+  'Liberia':        [10.635, -85.437, true, 'start', 12, 5],
+  'Limón':          [9.99, -83.031, true, 'end', -12, -6],
+  // Guanacaste
+  'Tamarindo':      [10.299, -85.837, true, 'end', -12, 4],
+  'Nosara':         [9.979, -85.653, true, 'end', -12, 4],
+  'Flamingo':       [10.433, -85.785],
+  'Marbella':       [10.056, -85.71],
+  'Papagayo':       [10.63, -85.68, true, 'end', -12, 4],
+  'Las Catalinas':  [10.478, -85.792],
+  'Playa Hermosa':  [10.567, -85.675],
+  'Islita':         [9.857, -85.405],
+  'Santa Cruz':     [10.261, -85.585],
+  'Nicoya':         [10.148, -85.452],
+  // Southern Nicoya Peninsula & Central Pacific
+  'Santa Teresa':   [9.643, -85.168, true, 'end', -12, 10],
+  'Malpaís':        [9.607, -85.142],
+  'Cabuya':         [9.596, -85.093],
+  'Montezuma':      [9.655, -85.069],
+  'Cóbano':         [9.683, -85.11],
+  'Tambor':         [9.716, -85.016],
+  'Manzanillo':     [9.69, -85.2],
+  'Puntarenas':     [9.976, -84.838, true, 'start', 10, 4],
+  'Monteverde':     [10.301, -84.825],
+  'Quepos':         [9.43, -84.162, true, 'end', -12, 4],
+  // Southern zone
+  'Dominical':      [9.253, -83.861],
+  'Uvita':          [9.16, -83.745, true, 'end', -12, 6],
+  'Ojochal':        [9.077, -83.665],
+  'Pérez Zeledón':  [9.373, -83.704, true, 'start', 12, 5],
+  'Buenos Aires':   [9.165, -83.334],
+  'San Vito':       [8.821, -82.971],
+  'Golfito':        [8.64, -83.183, true, 'start', 12, 5],
+  'Puerto Jiménez': [8.535, -83.305],
+  'Pavones':        [8.392, -83.14],
+  // Northern zone
+  'Arenal':         [10.463, -84.703, true, 'end', -12, -6],
+  'Ciudad Quesada': [10.323, -84.427, true, 'start', 12, 6],
+  'Upala':          [10.898, -85.016],
+  'Los Chiles':     [11.033, -84.713, true, 'start', 12, 5],
+  'Sarapiquí':      [10.452, -84.018],
+  // Caribbean
+  'Guápiles':       [10.216, -83.787],
+  'Tortuguero':     [10.543, -83.504, true, 'start', 12, 5],
+  'Cahuita':        [9.737, -82.84],
+  'Puerto Viejo':   [9.656, -82.755, true, 'end', -12, 16],
+};
+
+// Province borders (Natural Earth admin-1, public domain) and label anchors
+const PROVINCE_DATA = require('../data-src/cr-provinces.json');
+const PROVINCE_LABELS = {
+  Guanacaste: [10.36, -85.27], Alajuela: [10.74, -84.42], Heredia: [10.6, -84.0], Limón: [10.22, -83.42],
+  'San José': [9.5, -83.98], Cartago: [9.7, -83.6], Puntarenas: [8.82, -83.42],
 };
 
 // ---------- Illustration pieces ----------
@@ -243,6 +276,15 @@ for (let i = 0; i < 20000 && forest.length < 720; i++) {
 const palms = [['Tamarindo', 16, -4], ['Santa Teresa', 18, -14], ['Puerto Viejo', -22, -6], ['Uvita', 14, -18], ['Nosara', 16, 2], ['Pavones', 14, -18]]
   .map(([k, dx, dy]) => { const [x, y] = pinXY[k]; return { y: y + dy, svg: palm(x + dx, y + dy, 0.95) }; });
 
+const provincePaths = PROVINCE_DATA.features.map((f) => {
+  const polys = f.type === 'Polygon' ? [f.coordinates] : f.coordinates;
+  return toPath(polys.map((poly) => poly.map((ring) => ring.map(proj))), 1.2);
+}).join('');
+const provinceLabels = Object.entries(PROVINCE_LABELS).map(([name, [lat, lon]]) => {
+  const [x, y] = ll(lat, lon);
+  return `<text class="map-province" x="${f1(x)}" y="${f1(y)}" text-anchor="middle">${name.toUpperCase()}</text>`;
+}).join('');
+
 const layered = [...forest, ...relief, ...palms].sort((a, b) => a.y - b.y).map((o) => o.svg).join('');
 
 // Sea waves
@@ -309,7 +351,9 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" cla
 <g clip-path="url(#crClip)">
   <path d="${'M' + RIDGE.map((p) => p.map(f1).join(' ')).join('L')}" fill="none" stroke="${C.sage}" stroke-width="90" stroke-linecap="round" stroke-linejoin="round" opacity=".1" filter="url(#crSoft)"/>
   ${layered}
+  <path class="province-borders" d="${provincePaths}" fill="none" stroke="${C.cream}" stroke-width="1.4" stroke-opacity=".55" stroke-dasharray="5 5" stroke-linejoin="round"/>
 </g>
+<g class="provinces">${provinceLabels}</g>
 <use href="#crShape" fill="none" stroke="${C.cream}" stroke-width="1.4" stroke-opacity=".55"/>
 <text class="map-sea" data-i18n="map.pacific" transform="translate(${f1(ll(9.05, -85.35)[0])} ${f1(ll(9.05, -85.35)[1])}) rotate(-28)">Pacific Ocean</text>
 <text class="map-sea" data-i18n="map.caribbean" transform="translate(${f1(ll(10.75, -83.15)[0])} ${f1(ll(10.75, -83.15)[1])}) rotate(-38)">Caribbean Sea</text>

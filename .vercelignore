@@ -5,3 +5,4 @@ data-test/
 node_modules/
 .claude/
 credenciales-admin.txt
+.cache/

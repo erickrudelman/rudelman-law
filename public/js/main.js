@@ -19,9 +19,17 @@
     { key: 'Tax Planning Services', en: ['Tax Planning Services', 'Tax structuring and planning in Costa Rica.'], es: ['Planificación Fiscal', 'Estructuración y planificación tributaria.'] },
   ];
 
-  const PLACES = ['San José', 'Tamarindo', 'Nosara', 'Flamingo', 'Marbella', 'Papagayo', 'Las Catalinas', 'Islita',
-    'Manzanillo', 'Playa Hermosa', 'Santa Teresa', 'Malpaís', 'Cabuya', 'Montezuma', 'Cóbano', 'Tambor',
-    'Puntarenas', 'Quepos', 'Dominical', 'Uvita', 'Ojochal', 'Pavones', 'Monteverde', 'Arenal', 'Puerto Viejo'];
+  // Every place has a pin on the illustrated map (scripts/build-map.js), grouped by province
+  const PLACES = {
+    'San José': ['San José', 'Pérez Zeledón'],
+    'Alajuela': ['Alajuela', 'Ciudad Quesada', 'Arenal', 'Upala', 'Los Chiles'],
+    'Heredia': ['Heredia', 'Sarapiquí'],
+    'Cartago': ['Cartago', 'Turrialba'],
+    'Guanacaste': ['Liberia', 'Papagayo', 'Playa Hermosa', 'Flamingo', 'Las Catalinas', 'Tamarindo', 'Santa Cruz', 'Nicoya', 'Marbella', 'Nosara', 'Islita'],
+    'Puntarenas': ['Puntarenas', 'Monteverde', 'Tambor', 'Montezuma', 'Cabuya', 'Cóbano', 'Malpaís', 'Santa Teresa', 'Manzanillo',
+      'Quepos', 'Dominical', 'Uvita', 'Ojochal', 'Buenos Aires', 'San Vito', 'Puerto Jiménez', 'Golfito', 'Pavones'],
+    'Limón': ['Limón', 'Tortuguero', 'Guápiles', 'Cahuita', 'Puerto Viejo'],
+  };
 
   const I18N = {
     en: {
@@ -51,9 +59,9 @@
       'practice.sub': "Ask us about our practice areas or tell us any of your concerns and we'll get back to you immediately. At Rudelman & Associates we are delighted to help our clients in all of their matters.",
       'practice.cta': 'Contact Us',
       'coverage.eyebrow': 'Where we work',
-      'coverage.title': 'From San José to every coast.',
+      'coverage.title': 'All of Costa Rica, every province.',
       'map.pacific': 'Pacific Ocean', 'map.caribbean': 'Caribbean Sea',
-      'coverage.text': 'We provide extensive legal and business advisory services across Costa Rica, covering areas from San José to the Pacific and Caribbean coasts, and other locations.',
+      'coverage.text': 'We provide legal and business advisory services throughout Costa Rica, in all seven provinces: from the Central Valley to the northern plains, both coasts and the southern zone.',
       'team.eyebrow': 'Our Team', 'team.title': 'Our Team Members', 'team.empty': 'Team information coming soon.',
       'contact.eyebrow': 'Get in touch with us now', 'contact.title': 'Contact Us',
       'contact.sub': 'Get in touch with us and let us know any kind of concern or question you have.',
@@ -101,9 +109,9 @@
       'practice.sub': 'Consúltenos sobre nuestras áreas de práctica o cuéntenos su inquietud y le responderemos de inmediato. En Rudelman & Asociados nos complace ayudar a nuestros clientes en todos sus asuntos.',
       'practice.cta': 'Contáctenos',
       'coverage.eyebrow': 'Dónde trabajamos',
-      'coverage.title': 'De San José a todas las costas.',
+      'coverage.title': 'Todo Costa Rica, cada provincia.',
       'map.pacific': 'Océano Pacífico', 'map.caribbean': 'Mar Caribe',
-      'coverage.text': 'Brindamos amplios servicios de asesoría legal y empresarial en todo Costa Rica, desde San José hasta las costas del Pacífico y el Caribe, y otras localidades.',
+      'coverage.text': 'Brindamos asesoría legal y empresarial en todo Costa Rica, en las siete provincias: desde el Valle Central hasta la zona norte, ambas costas y la zona sur.',
       'team.eyebrow': 'Nuestro Equipo', 'team.title': 'Miembros del Equipo', 'team.empty': 'Información del equipo próximamente.',
       'contact.eyebrow': 'Contáctenos ahora', 'contact.title': 'Contáctenos',
       'contact.sub': 'Escríbanos y cuéntenos cualquier inquietud o consulta que tenga.',
@@ -174,12 +182,22 @@
 
   // ---------- Places ----------
   const places = document.getElementById('places');
-  PLACES.forEach((p, i) => {
-    const li = document.createElement('li');
-    li.textContent = p;
-    li.dataset.place = p;
-    if (i === 0) li.className = 'hl';
-    places.appendChild(li);
+  Object.entries(PLACES).forEach(([province, towns]) => {
+    const group = document.createElement('li');
+    group.className = 'place-group';
+    const label = document.createElement('span');
+    label.className = 'place-province';
+    label.textContent = province;
+    const list = document.createElement('ul');
+    towns.forEach((town) => {
+      const li = document.createElement('li');
+      li.textContent = town;
+      li.dataset.place = town;
+      if (town === 'San José') li.className = 'hl';
+      list.appendChild(li);
+    });
+    group.append(label, list);
+    places.appendChild(group);
   });
 
   // ---------- Illustrated map: chips and pins highlight each other ----------
