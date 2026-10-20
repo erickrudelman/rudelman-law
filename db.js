@@ -39,24 +39,29 @@ db.exec(`
   );
 `);
 
-// Team as published on rudelmanlaw.com/team (October 2026).
+// Initial team, in display order (updated October 2026).
 const ROLES = {
-  notary:   ['Attorney and Public Notary', 'Abogado(a) y Notario(a) Público(a)'],
-  attorney: ['Attorney', 'Abogado(a)'],
-  paralegal:['Paralegal', 'Asistente Legal'],
+  notaryM:   ['Attorney and Public Notary', 'Abogado y Notario Público'],
+  notaryF:   ['Attorney and Public Notary', 'Abogada y Notaria Pública'],
+  attorneyM: ['Attorney', 'Abogado'],
+  attorneyF: ['Attorney', 'Abogada'],
+  paralegal: ['Paralegal', 'Asistente Legal'],
+  paralegalAdmin: ['Paralegal and Administrative Assistant', 'Asistente Legal y Administrativo'],
 };
 const SEED_TEAM = [
-  ['Melvin Rudelman W.',     'notary',    'melvinr@rudelmanlaw.com'],
-  ['Jennifer Hernández',     'attorney',  null],
-  ['Carlos Solis A.',        'paralegal', 'recepcion@rudelmanlaw.com'],
-  ['Gloriana Elizondo R.',   'paralegal', 'glorianae@rudelmanlaw.com'],
-  ['Kattia Barrientos U.',   'notary',    'kattiab@rudelmanlaw.com'],
-  ['Gunnar Núñez Svanholm',  'notary',    null],
-  ['Emilia Rivas L.',        'paralegal', 'recepcion@rudelmanlaw.com'],
-  ['Ariana Flores',          'paralegal', null],
-  ['Roberto Ruffin Murillo', 'attorney',  'robertoru@rudelmanlaw.com'],
-  ['Ericka Redondo S',       'notary',    null],
-  ['Rona Meltzer S.',        'paralegal', 'ronam@rudelmanlaw.com'],
+  ['Melvin Rudelman Wohlstein',   'notaryM',        'melvinr@rudelmanlaw.com'],
+  ['Kattia Barrientos Ureña',     'notaryF',        'kattiab@rudelmanlaw.com'],
+  ['Roberto Ruffin Murillo',      'notaryM',        'robertoru@rudelmanlaw.com'],
+  ['Jennifer Hernández González', 'notaryF',        null],
+  ['Gunnar Núñez Svanholm',       'notaryM',        null],
+  ['Ericka Redondo Sáenz',        'notaryF',        null],
+  ['Rodolfo Hernández Duranti',   'attorneyM',      null],
+  ['Rona Meltzer Stemberg',       'attorneyF',      'ronam@rudelmanlaw.com'],
+  ['Carolina Bolaños Herrera',    'paralegal',      null],
+  ['Ariana Flores Ortiz',         'paralegal',      null],
+  ['Gloriana Elizondo Mata',      'paralegal',      'glorianae@rudelmanlaw.com'],
+  ['Emilia Rivas León',           'paralegal',      'recepcion@rudelmanlaw.com'],
+  ['Carlos Solis Azofeifa',       'paralegalAdmin', 'recepcion@rudelmanlaw.com'],
 ];
 
 if (db.prepare('SELECT COUNT(*) AS n FROM team_members').get().n === 0) {

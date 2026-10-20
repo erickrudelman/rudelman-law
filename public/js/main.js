@@ -68,6 +68,11 @@
       'form.rate': 'Too many messages in a short time. Please try again later or call us.',
       'form.err': 'Something went wrong. Please email recepcion@rudelmanlaw.com or call +506 2290-5021.',
       'footer.tag': 'Legal and business advisory in Costa Rica since 1989.',
+      'footer.credit': 'Created by RUME', 'form.email': 'Email',
+      'meta.title': 'Rudelman Law Firm & Associates | San José, Costa Rica',
+      'meta.description': 'Rudelman Law Firm & Associates — legal and business advisory in Costa Rica since 1989. Commercial, corporate, real estate, notary services and more. San José, Costa Rica.',
+      'aria.home': 'Rudelman Law — home', 'aria.main': 'Main', 'aria.lang': 'Language', 'aria.menu': 'Menu',
+      'aria.highlights': 'Highlights', 'aria.map': 'Map of Costa Rica',
     },
     es: {
       'nav.about': 'Nosotros', 'nav.practice': 'Áreas de Práctica', 'nav.team': 'Equipo', 'nav.contact': 'Contacto',
@@ -113,6 +118,11 @@
       'form.rate': 'Demasiados mensajes en poco tiempo. Intente más tarde o llámenos.',
       'form.err': 'Ocurrió un error. Escríbanos a recepcion@rudelmanlaw.com o llame al +506 2290-5021.',
       'footer.tag': 'Asesoría legal y empresarial en Costa Rica desde 1989.',
+      'footer.credit': 'Creado por RUME', 'form.email': 'Correo electrónico',
+      'meta.title': 'Rudelman Law Firm & Asociados | Bufete de abogados en San José, Costa Rica',
+      'meta.description': 'Rudelman Law Firm & Asociados — asesoría legal y empresarial en Costa Rica desde 1989. Derecho comercial, corporativo, bienes raíces, servicios notariales y más. San José, Costa Rica.',
+      'aria.home': 'Rudelman Law — inicio', 'aria.main': 'Principal', 'aria.lang': 'Idioma', 'aria.menu': 'Menú',
+      'aria.highlights': 'Destacados', 'aria.map': 'Mapa de Costa Rica',
     },
   };
 
@@ -127,6 +137,9 @@
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+    document.querySelectorAll('[data-i18n-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    document.title = t('meta.title');
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));
     document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     renderPractice();
     renderTeam();
