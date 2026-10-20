@@ -1,4 +1,4 @@
-// Local / long-running server. On Vercel the same app runs from api/index.js.
+// Local / long-running server. On Vercel, app.js is deployed directly as an Express app.
 const app = require('./app');
 
 const PORT = process.env.PORT || 3000;

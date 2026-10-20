@@ -5,3 +5,7 @@ public/team.json
 .claude/
 .vercel
 .env*.local
+
+.vercel
+.env*
+credenciales-admin.txt
