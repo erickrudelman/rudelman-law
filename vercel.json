@@ -1,53 +1,24 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "redirects": [
-    {
-      "source": "/admin",
-      "destination": "/admin/",
-      "permanent": true
-    }
+  "builds": [
+    { "src": "app.js", "use": "@vercel/node" },
+    { "src": "public/**", "use": "@vercel/static" }
   ],
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        }
-      ]
+      "src": "/(.*)",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "continue": true
     },
-    {
-      "source": "/admin/(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    }
-  ],
-  "services": {
-    "rudelman-law": {
-      "root": ".",
-      "buildCommand": "npm ci"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": {
-        "type": "service",
-        "service": "rudelman-law"
-      }
-    }
+    { "src": "/admin/?.*", "headers": { "X-Robots-Tag": "noindex, nofollow" }, "continue": true },
+    { "src": "/api/(.*)", "dest": "/app.js" },
+    { "src": "/admin", "status": 308, "headers": { "Location": "/admin/" } },
+    { "src": "/", "dest": "/public/index.html" },
+    { "src": "/admin/", "dest": "/public/admin/index.html" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
